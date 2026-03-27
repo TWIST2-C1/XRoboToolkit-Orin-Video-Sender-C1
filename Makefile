@@ -19,11 +19,18 @@ APP := OrinVideoSender
 ###############################################################################
 
 ###############################################################################
+# C1 Stereo
+
+SRCS := \
+	c1_stereo_camera.cpp \
+	main_c1_stereo_tcp.cpp
+
+###############################################################################
 # ZED
 
 # TCP w/o asio -- pass
-SRCS := \
- 	main_zed_tcp.cpp
+# SRCS := \
+#  	main_zed_tcp.cpp
 
 #SRCS := \
 	main_zed_tcp_zmq.cpp
@@ -67,8 +74,8 @@ LDFLAGS := -L/usr/local/zed/lib \
 LDFLAGS += $(shell pkg-config --libs libavcodec libavformat libavutil libswscale libavdevice 2>/dev/null || echo "-lavcodec -lavformat -lavutil -lswscale -lavdevice")
 
 # Core libraries
-LDFLAGS += -lsl_zed \
-	-lcuda -lcudart \
+# LDFLAGS += -lsl_zed \ 
+LDFLAGS += -lcuda -lcudart \
 	-lopencv_core -lopencv_imgproc -lopencv_videoio -lopencv_imgcodecs \
 	-lssl -lcrypto \
 	-lpthread \

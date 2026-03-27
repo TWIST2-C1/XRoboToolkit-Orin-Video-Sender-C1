@@ -8,7 +8,7 @@ import struct
 import time
 
 class ZMQRawImageReceiver:
-    def __init__(self, server_ip="192.168.200.112", port=5555):
+    def __init__(self, server_ip="127.168.200.112", port=5555):
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.SUB)
         self.socket.connect(f"tcp://{server_ip}:{port}")
@@ -214,7 +214,7 @@ class ZMQRawImageReceiver:
         self.context.term()
 
 def main():
-    SERVER_IP = "192.168.123.164"  # 改成你的ZED设备IP
+    SERVER_IP = "127.0.0.1"  # 改成你的ZED设备IP
     PORT = 5555
     
     receiver = ZMQRawImageReceiver(SERVER_IP, PORT)
