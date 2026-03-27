@@ -43,7 +43,7 @@ make c1
   --device-left /dev/video0 \
   --device-right /dev/video1 \
   --send \
-  --server 192.168.1.10 \
+  --server 192.168.123.3 \
   --port 12345
 ```
 *(※ `192.168.1.10` の部分は、実際の受信側 PC / XR ヘッドセットの IP アドレスに変更してください。)*
