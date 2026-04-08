@@ -9,7 +9,7 @@ public:
         int cam2_index = 2; // Default to 0 and 2 for Jetson setup
         int width = 1280;   // Capture width per camera (full width will be 2x)
         int height = 720;   // Capture height
-        int fps = 60;       // Capture FPS
+        int fps = 30;       // Capture FPS
     };
 
     C1StereoCamera();

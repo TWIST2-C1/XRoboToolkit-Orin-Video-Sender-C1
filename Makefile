@@ -28,9 +28,9 @@ SRCS := \
 ###############################################################################
 # ZED
 
-# TCP w/o asio -- pass
-# SRCS := \
-#  	main_zed_tcp.cpp
+ #TCP w/o asio -- pass
+#SRCS := \
+  	main_zed_tcp.cpp
 
 #SRCS := \
 	main_zed_tcp_zmq.cpp
@@ -51,7 +51,7 @@ SRCS := \
 OBJS := $(SRCS:.cpp=.o)
 
 # Include paths
-CPPFLAGS := -std=c++11 \
+CPPFLAGS := -std=c++17 \
 	-I./asio-1.30.2/include \
 	-I/usr/local/zed/include \
 	-I/usr/include/opencv4 \
@@ -60,7 +60,7 @@ CPPFLAGS := -std=c++11 \
 	$(shell pkg-config --cflags libzmq 2>/dev/null || echo "")
 
 # Compiler flags
-CXXFLAGS := -Wall -Wextra -O2 -g
+CXXFLAGS := -Wall -Wextra -O2 -g -D_GLIBCXX_USE_CXX11_ABI=0
 
 # FFmpeg flags
 CXXFLAGS += $(shell pkg-config --cflags libavcodec libavformat libavutil libswscale libavdevice 2>/dev/null || echo "")
@@ -74,7 +74,16 @@ LDFLAGS := -L/usr/local/zed/lib \
 LDFLAGS += $(shell pkg-config --libs libavcodec libavformat libavutil libswscale libavdevice 2>/dev/null || echo "-lavcodec -lavformat -lavutil -lswscale -lavdevice")
 
 # Core libraries
-# LDFLAGS += -lsl_zed \ 
+#LDFLAGS += -lsl_zed \ 
+# Core libraries
+#ZEDのときに使用
+#LDFLAGS += -lsl_zed -lcuda -lcudart \
+#	-lopencv_core -lopencv_imgproc -lopencv_videoio -lopencv_imgcodecs \
+#	-lssl -lcrypto \
+#	-lpthread \
+#	-lstdc++
+
+# -lsl_zed を消して、C1のときに使用
 LDFLAGS += -lcuda -lcudart \
 	-lopencv_core -lopencv_imgproc -lopencv_videoio -lopencv_imgcodecs \
 	-lssl -lcrypto \

@@ -1,0 +1,13 @@
+
+- name: C1
+  type: C1
+  width: 1280
+  height: 720
+  fps: 30
+  bitrate: 4000000
+- Name: C1_Pascal
+  Type: C1
+  Width: 1280
+  Height: 720
+  Fps: 30
+  Bitrate: 4000000
