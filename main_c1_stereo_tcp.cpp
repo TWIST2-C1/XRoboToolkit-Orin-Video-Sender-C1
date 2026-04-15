@@ -736,6 +736,30 @@ void streamingThreadFunction() {
       return;
     }
 
+    // -------------------------------------------------------------------
+    // 修正①: カメラが実際にネゴシエートした解像度・FPS で config を上書き。
+    // c1_stereo_camera.cpp の open() が config_.width/height/fps を
+    // 実際の値に書き戻しているため、getWidth()/getHeight()/getFPS() は
+    // 「実際の SBS 幅」「実際の高さ」「実際の FPS」を返す。
+    // これを使わないと GStreamer の caps とフレームサイズが食い違い画像化けする。
+    // -------------------------------------------------------------------
+    {
+      int actual_sbs_w = c1.getWidth();   // cam_width * 2
+      int actual_h     = c1.getHeight();
+      int actual_fps   = c1.getFPS();
+      if (actual_sbs_w > 0 && actual_h > 0) {
+        std::cout << "Actual camera resolution (SBS): " << actual_sbs_w
+                  << "x" << actual_h << "@" << actual_fps << std::endl;
+        config.width  = actual_sbs_w;
+        config.height = actual_h;
+        if (actual_fps > 0) config.fps = actual_fps;
+      } else {
+        std::cerr << "WARNING: Could not read actual camera resolution, "
+                     "using requested values (" << config.width << "x"
+                  << config.height << ")" << std::endl;
+      }
+    }
+
     // Build GStreamer pipeline
     std::string pipeline_str;
     if (config.width > 0 && config.height > 0) {
@@ -803,10 +827,12 @@ void streamingThreadFunction() {
                  cv_image.total() * cv_image.elemSize());
           gst_buffer_unmap(buffer, &map);
 
+          // 修正②: タイムスタンプは実際の FPS を使う（固定 60 は誤り）
+          int ts_fps = (config.fps > 0) ? config.fps : 60;
           GST_BUFFER_PTS(buffer) =
-              gst_util_uint64_scale(frame_id, GST_SECOND, 60);
+              gst_util_uint64_scale(frame_id, GST_SECOND, ts_fps);
           GST_BUFFER_DURATION(buffer) =
-              gst_util_uint64_scale(1, GST_SECOND, 60);
+              gst_util_uint64_scale(1, GST_SECOND, ts_fps);
           gst_app_src_push_buffer(GST_APP_SRC(appsrc), buffer);
 
           frame_id++;

@@ -39,10 +39,30 @@ bool C1StereoCamera::open(const Config& config) {
     cap2_.set(cv::CAP_PROP_FPS, config_.fps);
     cap2_.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
 
-    // Check negotiated resolution
-    int w1 = cap1_.get(cv::CAP_PROP_FRAME_WIDTH);
-    int h1 = cap1_.get(cv::CAP_PROP_FRAME_HEIGHT);
-    std::cout << "Negotiated Cam1: " << w1 << "x" << h1 << "@" << config_.fps << std::endl;
+    // Check negotiated resolution for Cam1
+    int w1 = (int)cap1_.get(cv::CAP_PROP_FRAME_WIDTH);
+    int h1 = (int)cap1_.get(cv::CAP_PROP_FRAME_HEIGHT);
+    int fps1 = (int)cap1_.get(cv::CAP_PROP_FPS);
+    std::cout << "Negotiated Cam1: " << w1 << "x" << h1 << "@" << fps1 << std::endl;
+
+    // Check negotiated resolution for Cam2
+    int w2 = (int)cap2_.get(cv::CAP_PROP_FRAME_WIDTH);
+    int h2 = (int)cap2_.get(cv::CAP_PROP_FRAME_HEIGHT);
+    int fps2 = (int)cap2_.get(cv::CAP_PROP_FPS);
+    std::cout << "Negotiated Cam2: " << w2 << "x" << h2 << "@" << fps2 << std::endl;
+
+    // Warn if the two cameras disagree on resolution
+    if (w1 != w2 || h1 != h2) {
+        std::cerr << "[C1StereoCamera] WARNING: Camera resolutions differ! "
+                  << "Cam1=" << w1 << "x" << h1 << " Cam2=" << w2 << "x" << h2
+                  << ". Using Cam1 values. Right frame will be resized in retrieveImage()." << std::endl;
+    }
+
+    // Store the ACTUAL negotiated values back into config_
+    // so callers (e.g. GStreamer pipeline builder) can query the true resolution.
+    config_.width  = (w1 > 0) ? w1 : config_.width;
+    config_.height = (h1 > 0) ? h1 : config_.height;
+    config_.fps    = (fps1 > 0) ? fps1 : config_.fps;
 
     return true;
 }
