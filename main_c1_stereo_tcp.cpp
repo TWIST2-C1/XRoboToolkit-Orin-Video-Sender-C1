@@ -637,7 +637,7 @@ int main(int argc, char *argv[]) {
       current_camera_config.width = 2560;
       current_camera_config.height = 720;
       current_camera_config.fps = 60;
-      current_camera_config.bitrate = 4000000;
+      current_camera_config.bitrate = 20000000;
       current_camera_config.enableMvHevc = 0;
       current_camera_config.renderMode = 0;
       current_camera_config.camera = "C1";
@@ -750,9 +750,9 @@ void streamingThreadFunction() {
       if (actual_sbs_w > 0 && actual_h > 0) {
         std::cout << "Actual camera resolution (SBS): " << actual_sbs_w
                   << "x" << actual_h << "@" << actual_fps << std::endl;
-        config.width  = actual_sbs_w;
-        config.height = actual_h;
-        if (actual_fps > 0) config.fps = actual_fps;
+        //config.width  = actual_sbs_w;
+        //config.height = actual_h;
+        //if (actual_fps > 0) config.fps = actual_fps;
       } else {
         std::cerr << "WARNING: Could not read actual camera resolution, "
                      "using requested values (" << config.width << "x"

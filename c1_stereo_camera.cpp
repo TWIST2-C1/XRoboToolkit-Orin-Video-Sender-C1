@@ -60,9 +60,9 @@ bool C1StereoCamera::open(const Config& config) {
 
     // Store the ACTUAL negotiated values back into config_
     // so callers (e.g. GStreamer pipeline builder) can query the true resolution.
-    config_.width  = (w1 > 0) ? w1 : config_.width;
-    config_.height = (h1 > 0) ? h1 : config_.height;
-    config_.fps    = (fps1 > 0) ? fps1 : config_.fps;
+    //config_.width  = (w1 > 0) ? w1 : config_.width;
+    //config_.height = (h1 > 0) ? h1 : config_.height;
+    //config_.fps    = (fps1 > 0) ? fps1 : config_.fps;
 
     return true;
 }
@@ -99,6 +99,8 @@ bool C1StereoCamera::retrieveImage(cv::Mat& stereo_image) {
 
     // Concatenate horizontally (Cam 1 left, Cam 2 right)
     cv::hconcat(bgra1, bgra2, stereo_image);
+    // 🌟🌟 追加：GStreamerに流し込む前に、パイプラインのサイズ（VRの要求サイズ）にピッタリ合わせる！
+    cv::resize(stereo_image, stereo_image, cv::Size(config_.width * 2, config_.height));
     return true;
 }
 
