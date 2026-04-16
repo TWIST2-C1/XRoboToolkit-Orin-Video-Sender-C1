@@ -444,6 +444,9 @@ void handleOpenCamera(const std::vector<uint8_t> &data) {
     // Parse the camera configuration data
     CameraRequestData cameraConfig =
         CameraRequestDeserializer::deserialize(data);
+    // 追加：PICOからの片目サイズ(1280)を、ステレオ両目サイズ(2560)に2倍にする！
+    cameraConfig.width = cameraConfig.width * 2;
+    //cameraConfig.bitrate = 8000000;
 
     std::cout << "Camera config - Width: " << cameraConfig.width
               << ", Height: " << cameraConfig.height
@@ -636,9 +639,9 @@ int main(int argc, char *argv[]) {
       std::lock_guard<std::mutex> lock(config_mutex);
       current_camera_config.width = 2560;
       current_camera_config.height = 720;
-      current_camera_config.fps = 60;
-      current_camera_config.bitrate = 20000000;
-      current_camera_config.enableMvHevc = 0;
+      current_camera_config.fps = 30;
+      current_camera_config.bitrate = 8000000;
+      current_camera_config.enableMvHevc = 1;
       current_camera_config.renderMode = 0;
       current_camera_config.camera = "C1";
       current_camera_config.ip = send_to_server;

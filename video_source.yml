@@ -96,11 +96,11 @@
     - name: "CamWidth"
       type: "int"
       description: "Camera width for the video stream"
-      value: 1280
+      value: 1920
     - name: "CamHeight"
       type: "int"
       description: "Camera height for the video stream"
-      value: 720
+      value: 1080
     - name: "CamFPS"
       type: "int"
       description: "Frame rate of the video stream in FPS"
@@ -108,4 +108,4 @@
     - name: "CamBitrate"
       type: "int"
       description: "Bitrate of the video stream in bps"
-      value: 20000000
+      value: 8000000

@@ -828,14 +828,12 @@ int main(int argc, char *argv[]) {
     {
       std::lock_guard<std::mutex> lock(config_mutex);
       // CLI で指定されなかった項目にデフォルト値を設定
-      if (current_camera_config.width == 0)
-        current_camera_config.width = 1280;
-      if (current_camera_config.height == 0)
-        current_camera_config.height = 720;
-      if (current_camera_config.fps == 0)
-        current_camera_config.fps = 30;
-      if (current_camera_config.bitrate == 0)
-        current_camera_config.bitrate = 4000000;
+      
+      current_camera_config.width = 1280;
+      current_camera_config.height = 720;
+      current_camera_config.fps = 30;
+      current_camera_config.bitrate = 4000000;
+
       current_camera_config.ip = send_to_server;
       current_camera_config.port = send_to_port;
     }
