@@ -19,11 +19,16 @@ APP := OrinVideoSender
 ###############################################################################
 
 ###############################################################################
-# C1 Stereo
+# C1 Stereo (TCP only)
 
-SRCS := \
+#SRCS := \
 	c1_stereo_camera.cpp \
 	main_c1_stereo_tcp.cpp
+
+# C1 Stereo (TCP + ZMQ)
+SRCS := \
+	c1_stereo_camera.cpp \
+	main_c1_stereo_tcp_zmq.cpp
 
 ###############################################################################
 # ZED
