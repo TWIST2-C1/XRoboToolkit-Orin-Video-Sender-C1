@@ -101,7 +101,7 @@ python ~/TWIST2/video_test.py
 ```
 ### XRobotToolkit-Orin-Video-Senderを基にしたプログラムで映像を入手してVRで確認するとき
 * 現在準備中
-#### PICO4U内のプログラムを変更してC1の項目を作成。
+#### PICO4U内のプログラムを変更してC1の項目を作成。（映像の解像度を変更するときにもこれを使用する必要があります）
  ```
 # pull the file first
 adb pull /sdcard/Android/data/com.xrobotoolkit.client/files/video_source.yml
@@ -119,8 +119,9 @@ adb push video_source.yml /sdcard/Android/data/com.xrobotoolkit.client/files/vid
 受信側（クライアント）からの接続と `OPEN_CAMERA` コマンドを待ってから配信を開始するモードです。（XR アプリ等と連携する場合に標準的です）←**こっちを使っています！**
 listenはPC側がVR側からの要求（OPEN_CAMERA）待ちという意味。要求を受け取ったら映像の配信を開始することになる。つまりサーバーが映像を配信し始める。
 ```
+conda activate tv
 cd ~/XRoboToolkit-Orin-Video-Sender
-./OrinVideoSender --listen 0.0.0.0:13579 --cam1 2 --cam2 0
+./OrinVideoSender --listen 0.0.0.0:13579 --cam1 0 --cam2 2
 ```
 映像が左右反対であれば、cam1とcam2の参照IDを逆にしてください。
 #### 追加のオプション一覧 (C1 専用)
@@ -132,6 +133,8 @@ cd ~/XRoboToolkit-Orin-Video-Sender
 | `--cam1 0` | 左カメラのデバイスパスを指定します。（デフォルト: `/dev/video0`） |
 | `--cam2 0` | 右カメラのデバイスパスを指定します。（デフォルト: `/dev/video1`） |
 | `--preview` | 映像をデバイスにも出力します |
+|'--zmq-raw tcp://*:5556'|ZMQで生（エンコード前）の映像配信します。5556のところがポート番号です|
+|'--zmq tcp://*:5556'|ZMQでエンコード済み（H.264）の映像配信します。5556のところがポート番号です|
 ---
 プログラムを変更した場合は以下のプログラムを行ってください。どのプログラムファイルを使用するかはMakefileで変更してください。
 ```
