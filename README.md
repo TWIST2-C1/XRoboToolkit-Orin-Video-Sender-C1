@@ -101,7 +101,7 @@ python ~/TWIST2/video_test.py
 ```
 ### XRobotToolkit-Orin-Video-Senderを基にしたプログラムで映像を入手してVRで確認するとき
 * 現在準備中
-#### PICO4U内のプログラムを変更してC1の項目を作成。
+#### PICO4U内のプログラムを変更してC1の項目を作成。（映像の解像度を変更するときにもこれを使用する必要があります）
  ```
 # pull the file first
 adb pull /sdcard/Android/data/com.xrobotoolkit.client/files/video_source.yml
@@ -111,31 +111,20 @@ adb pull /sdcard/Android/data/com.xrobotoolkit.client/files/video_source.yml
 # push the file back
 adb push video_source.yml /sdcard/Android/data/com.xrobotoolkit.client/files/video_source.yml
 ```
-#### 3. プログラムの起動方法
+#### プログラムの起動方法
+まずはPICO4とPCのWi-Fiが同じものに接続されているか確認してください。
 
-##### コマンド待受モード (`--listen`)
+##### PC側の操作　　
+コマンド待受モード (`--listen`)
 受信側（クライアント）からの接続と `OPEN_CAMERA` コマンドを待ってから配信を開始するモードです。（XR アプリ等と連携する場合に標準的です）←**こっちを使っています！**
-listenはVR側からの要求（OPEN_CAMERA）待ちという意味。要求を受け取ったら映像の配信を開始することになる。つまりサーバーが映像を配信し始める。
+listenはPC側がVR側からの要求（OPEN_CAMERA）待ちという意味。要求を受け取ったら映像の配信を開始することになる。つまりサーバーが映像を配信し始める。
 ```
-./OrinVideoSender --listen 0.0.0.0:13579 --cam1 2 --cam2 0
+conda activate tv
+cd ~/XRoboToolkit-Orin-Video-Sender
+./OrinVideoSender --listen 0.0.0.0:13579 --cam1 0 --cam2 2
 ```
-*(※ このモードのときは、後述するクライアント側からのコマンド送信時にステレオの設定が適用されます。)*
-```
-make clean && make
-```
-
----
-
-#### 4. クライアントからの接続仕様（重要）
-
-`--listen` モードで運用する場合、クライアント（XR ヘッドセット等）から送信する `OPEN_CAMERA` パケットに以下の設定を含める必要があります。
-
-1. **カメラ種別の指定**
-   - 従来 `"ZEDMINI"` と指定していた部分を、**`"C1"`** に変更して送信してください。
-
----
-
-#### 5. 追加のオプション一覧 (C1 専用)
+映像が左右反対であれば、cam1とcam2の参照IDを逆にしてください。
+#### 追加のオプション一覧 (C1 専用)
 
 実行時に細かな挙動を制御するためのオプションです。
 
@@ -144,7 +133,34 @@ make clean && make
 | `--cam1 0` | 左カメラのデバイスパスを指定します。（デフォルト: `/dev/video0`） |
 | `--cam2 0` | 右カメラのデバイスパスを指定します。（デフォルト: `/dev/video1`） |
 | `--preview` | 映像をデバイスにも出力します |
+|`--zmq-raw tcp://*:5556`|ZMQで生（エンコード前）の映像配信します。5556のところがポート番号です|
+|`--zmq tcp://*:5556`|ZMQでエンコード済み（H.264）の映像配信します。5556のところがポート番号です|
 ---
+プログラムを変更した場合は以下のプログラムを行ってください。どのプログラムファイルを使用するかはMakefileで変更してください。
+```
+make clean && make
+```
+
+---
+
+#### VR側の操作
+
+1. **カメラ種別の指定**
+   - 従来 `"ZEDMINI"` と指定していた部分を、**`"C1"`** に変更して送信してください。
+   - 'listen'ボタンを押してください。
+2. **IPアドレスの変更**
+　　- ここで入力するIPアドレスはPC側のものにしてください。(現在IPアドレスの入力がなぜかできなくなっています、、)
+3. **映像の確認**
+   - 右コントローラーのBボタンを押すと大画面になります。
+4. **映像の受信を終了するとき**
+   - listenボタンをもう一度押すと配信が終了します。
+
+---
+#### PCに映像を出力したい場合
+`zmq_receiver.py`のプログラムを使用してください。
+カメラと異なるデバイスに接続している場合と
+
+
 
 ## 参考サイト（元のプログラム）
 #### XR-RoboToolkit
