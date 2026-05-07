@@ -80,7 +80,6 @@ git push origin main
 - つながっているカメラの確認コマンド
 ```
 ls -l /dev/video*
-
 ```
 ```
 v4l2-ctl --list-devices
@@ -113,6 +112,12 @@ adb push video_source.yml /sdcard/Android/data/com.xrobotoolkit.client/files/vid
 ```
 #### プログラムの起動方法
 まずはPICO4とPCのWi-Fiが同じものに接続されているか確認してください。
+プログラムを変更した場合は以下のプログラムを行ってください。どのプログラムファイルを使用するかはMakefileで変更してください。
+```
+make clean && make
+```
+
+---
 
 ##### PC側の操作　　
 コマンド待受モード (`--listen`)
@@ -136,12 +141,7 @@ cd ~/XRoboToolkit-Orin-Video-Sender
 |`--zmq-raw tcp://*:5556`|ZMQで生（エンコード前）の映像配信します。5556のところがポート番号です|
 |`--zmq tcp://*:5556`|ZMQでエンコード済み（H.264）の映像配信します。5556のところがポート番号です|
 ---
-プログラムを変更した場合は以下のプログラムを行ってください。どのプログラムファイルを使用するかはMakefileで変更してください。
-```
-make clean && make
-```
 
----
 
 #### VR側の操作
 
@@ -158,7 +158,15 @@ make clean && make
 ---
 #### PCに映像を出力したい場合
 `zmq_receiver.py`のプログラムを使用してください。
-カメラと異なるデバイスに接続している場合と
+```
+conda activate tv
+cd ~/XRoboToolkit-Orin-Video-Sender
+python zmq_receiver.py
+```
+| オプション | 説明 |
+|---|---|
+| `--ip IP` | ZMQ配信をしているデバイスのIPアドレスを入力してください。（デフォルト：127.0.0.1） |
+| `--port PORT` | ZMQ配信をしているポート番号を入力してください（デフォルト: 5555） |
 
 
 
