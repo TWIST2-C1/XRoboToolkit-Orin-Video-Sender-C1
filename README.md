@@ -157,7 +157,7 @@ cd ~/XRoboToolkit-Orin-Video-Sender
 
 ---
 #### PCに映像を出力したい場合
-`zmq_receiver.py`のプログラムを使用してください。
+`zmq_receiver.py`のプログラムを使用してください。このプログラムではエンコード前の映像データした取得できません。
 ```
 conda activate tv
 cd ~/XRoboToolkit-Orin-Video-Sender
