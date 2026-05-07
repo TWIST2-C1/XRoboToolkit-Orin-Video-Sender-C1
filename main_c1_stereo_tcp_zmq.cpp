@@ -550,7 +550,7 @@ void handleOpenCamera(const std::vector<uint8_t> &data) {
     CameraRequestData cameraConfig =
         CameraRequestDeserializer::deserialize(data);
     // 追加：PICOからの片目サイズ(1280)を、ステレオ両目サイズ(2560)に2倍にする！
-    cameraConfig.width = cameraConfig.width * 2;
+    cameraConfig.width = cameraConfig.width;
     //cameraConfig.bitrate = 8000000;
 
     std::cout << "Camera config - Width: " << cameraConfig.width

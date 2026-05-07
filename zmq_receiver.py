@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import struct
 import time
-
+import argparse
 class ZMQRawImageReceiver:
     def __init__(self, server_ip="127.168.200.112", port=5555):
         self.context = zmq.Context()
@@ -214,8 +214,18 @@ class ZMQRawImageReceiver:
         self.context.term()
 
 def main():
-    SERVER_IP = "127.0.0.1"  # 改成你的ZED设备IP
-    PORT = 5555
+    # 引数を解析するための準備
+    parser = argparse.ArgumentParser(description="ZMQ Raw Image Receiver")
+    parser.add_argument("--ip", type=str, default="127.0.0.1", help="Jetson(送信側)のIPアドレス")
+    parser.add_argument("--port", type=int, default=5555, help="ZMQのポート番号")
+    
+    # コマンドライン引数を取得
+    args = parser.parse_args()
+    
+    SERVER_IP = args.ip
+    PORT = args.port
+    
+    print(f"Connecting to Server IP: {SERVER_IP}, Port: {PORT}")
     
     receiver = ZMQRawImageReceiver(SERVER_IP, PORT)
     
@@ -239,4 +249,4 @@ def main():
         print("Disconnected")
 
 if __name__ == "__main__":
-    main() 
+    main()
