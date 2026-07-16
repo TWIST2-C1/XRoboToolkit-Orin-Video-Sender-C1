@@ -72,31 +72,35 @@ v4l2-ctl --list-devices
 ## 概要
 c1カメラの映像をVRゴーグルで見るための方法です。`XRobotToolkit-Orin-Video-Sender`をC1カメラでも使用できるようにしたものです。もともと作成されていたzedカメラのものなどを参考にしてc1用のプログラムを追加しました。
 
-### XRobotToolkit-Orin-Video-Senderを基にしたプログラムで映像を入手してVRで確認するとき
+### 映像確認の手順
 #### PICO4U内のプログラムを変更してC1の項目を作成。（映像の解像度を変更するときにもこれを使用する必要があります）
+VR側にはじめはC1という選択肢がないので、VR側にC1という選択肢を与えたプログラムを与える。これは1度やれば大丈夫。でも映像の解像度を変更するときにもこの方法でプログラムを書き換えてVRに入れないといけない。  
+VRとPCをケーブルで接続して以下のコマンドを実行する。
  ```
 # pull the file first
 adb pull /sdcard/Android/data/com.xrobotoolkit.client/files/video_source.yml
 ```
+プログラムの編集（解像度の変更など）が終わりVRにプログラムを戻すときは以下のコマンドを実行する。
 ```
 # edit the video_source.yml
 # push the file back
 adb push video_source.yml /sdcard/Android/data/com.xrobotoolkit.client/files/video_source.yml
 ```
+
 #### プログラムの起動方法
 まずはPICO4とPCのWi-Fiが同じものに接続されているか確認してください。
 プログラムを変更した場合は以下のプログラムを行ってください。どのプログラムファイルを使用するかはMakefileで変更してください。
 ```
 make clean && make
 ```
-
+pc側の操作とVR側の操作があるのでそれぞれ行ってください。
 ##### PC側の操作　　
 コマンド待受モード (`--listen`)
 受信側（クライアント）からの接続と `OPEN_CAMERA` コマンドを待ってから配信を開始するモードです。（XR アプリ等と連携する場合に標準的です）
-listenはPC側がVR側からの要求（OPEN_CAMERA）待ちという意味。要求を受け取ったら映像の配信を開始することになる。つまりサーバーが映像を配信し始める。
+listenはPC側がVR側からの要求（OPEN_CAMERA）待ちという意味。要求を受け取ったら映像の配信を開始することになる。つまりサーバーが映像を配信し始める。  
+
 ```
-- パッケージのダウンロードを考えるのがめんどくさくて前使ってた仮想環境を使用しています。もともとのREADMEのところから環境を作った方が適切。
-```
+# パッケージのダウンロードを考えるのがめんどくさくて前使ってた仮想環境を使用しています。もともとのREADMEのところから環境を作った方が適切。
 conda activate tv
 cd ~/XRoboToolkit-Orin-Video-Sender
 ```
@@ -104,7 +108,7 @@ cd ~/XRoboToolkit-Orin-Video-Sender
 ```
 ./OrinVideoSender --listen 0.0.0.0:13579 --cam1 0 --cam2 2
 ```
-映像が左右反対であれば、cam1とcam2の参照IDを逆にしてください。` 0.0.0.0:13579`これは固定。
+VRとの接続が完了後、映像が左右反対であれば、cam1とcam2の参照IDを逆にしてください。` 0.0.0.0:13579`これは固定。
 
 #### 追加のオプション一覧 (C1 専用)
 
