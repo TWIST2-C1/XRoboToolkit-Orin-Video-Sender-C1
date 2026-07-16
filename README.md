@@ -110,8 +110,6 @@ adb push video_source.yml /sdcard/Android/data/com.xrobotoolkit.client/files/vid
 make clean && make
 ```
 
----
-
 ##### PC側の操作　　
 コマンド待受モード (`--listen`)
 受信側（クライアント）からの接続と `OPEN_CAMERA` コマンドを待ってから配信を開始するモードです。（XR アプリ等と連携する場合に標準的です）←**こっちを使っています！**
