@@ -70,28 +70,9 @@ ls -l /dev/video*
 v4l2-ctl --list-devices
 ```
 ## 概要
-c1カメラの映像をVRゴーグルで見るための2通りの方法です。1つ目の方法はwebRTC使ってサイト上の画面に映し出しVRで映像を見るためのものです。2つ目の方法は`XRobotToolkit-Orin-Video-Sender`をC1カメラでも使用できるようにしたものです。もともと作成されていたzedカメラのものなどを参考にしてc1用のプログラムを追加しました。
+c1カメラの映像をVRゴーグルで見るための方法です。`XRobotToolkit-Orin-Video-Sender`をC1カメラでも使用できるようにしたものです。もともと作成されていたzedカメラのものなどを参考にしてc1用のプログラムを追加しました。
 
----
-
-### xr_teleoperationを基にしたプログラムで映像を入手してVRで確認するとき(1つ目の方法)
-* 準備
-video_test.pyのプログラムを開いて、IPアドレスを使用しているPCのアドレスに変更する。（デフォルトでは192.168.??.??のようになっているはず）  
-* ターミナル１（映像の配信用）
-```
-conda activate tv 
-cd ~/TWIST2
-python -m teleimager.image_server
-```
-* ターミナル２(VRで映像を確認できるようにウェブに映像を配信)
-```
-conda activate tv
-python ~/TWIST2/video_test.py 
-```
-
----
-
-### XRobotToolkit-Orin-Video-Senderを基にしたプログラムで映像を入手してVRで確認するとき（2つ目の方法）
+### XRobotToolkit-Orin-Video-Senderを基にしたプログラムで映像を入手してVRで確認するとき
 #### PICO4U内のプログラムを変更してC1の項目を作成。（映像の解像度を変更するときにもこれを使用する必要があります）
  ```
 # pull the file first
@@ -114,12 +95,17 @@ make clean && make
 受信側（クライアント）からの接続と `OPEN_CAMERA` コマンドを待ってから配信を開始するモードです。（XR アプリ等と連携する場合に標準的です）
 listenはPC側がVR側からの要求（OPEN_CAMERA）待ちという意味。要求を受け取ったら映像の配信を開始することになる。つまりサーバーが映像を配信し始める。
 ```
-# パッケージのダウンロードを考えるのがめんどくさくて1つ目の方法の仮想環境を使用しています
+- パッケージのダウンロードを考えるのがめんどくさくて前使ってた仮想環境を使用しています。もともとのREADMEのところから環境を作った方が適切。
+```
 conda activate tv
 cd ~/XRoboToolkit-Orin-Video-Sender
+```
+- 配信用のプログラム（listenでVRからの映像送信の依頼待ち）
+```
 ./OrinVideoSender --listen 0.0.0.0:13579 --cam1 0 --cam2 2
 ```
-映像が左右反対であれば、cam1とcam2の参照IDを逆にしてください。
+映像が左右反対であれば、cam1とcam2の参照IDを逆にしてください。` 0.0.0.0:13579`これは固定。
+
 #### 追加のオプション一覧 (C1 専用)
 
 実行時に細かな挙動を制御するためのオプションです。
@@ -130,7 +116,7 @@ cd ~/XRoboToolkit-Orin-Video-Sender
 | `--cam2 0` | 右カメラのデバイスパスを指定します。（デフォルト: `/dev/video1`） |
 | `--preview` | 映像をデバイスにも出力します |
 |`--zmq-raw tcp://*:5556`|ZMQで生（エンコード前）の映像配信します。5556のところがポート番号です|
-|`--zmq tcp://*:5556`|ZMQでエンコード済み（H.264）の映像配信します。5556のところがポート番号です|
+|`--zmq tcp://*:5556`|ZMQでエンコード済み（H.264）の映像配信します。5556のところがポート番号です(あんまり使ってない）|
 
 
 
@@ -171,4 +157,23 @@ python zmq_receiver.py
 #### XRoboToolkit_Unity_Client
 - <https://github.com/XR-Robotics/XRoboToolkit-Unity-Client>
 
+---
+### このプロジェクトの前に使用していたもの
+---
 
+### xr_teleoperationを基にしたプログラムで映像を入手してVRで確認するとき(1つ目の方法)
+* 準備
+video_test.pyのプログラムを開いて、IPアドレスを使用しているPCのアドレスに変更する。（デフォルトでは192.168.??.??のようになっているはず）  
+* ターミナル１（映像の配信用）
+```
+conda activate tv 
+cd ~/TWIST2
+python -m teleimager.image_server
+```
+* ターミナル２(VRで映像を確認できるようにウェブに映像を配信)
+```
+conda activate tv
+python ~/TWIST2/video_test.py 
+```
+
+---
