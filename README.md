@@ -80,7 +80,7 @@ v4l2-ctl --list-devices
 video_test.pyのプログラムを開いて、IPアドレスを使用しているPCのアドレスに変更する。（デフォルトでは192.168.??.??のようになっているはず）  
 * ターミナル１（映像の配信用）
 ```
-conda activate tv
+conda activate tv 
 cd ~/TWIST2
 python -m teleimager.image_server
 ```
@@ -115,6 +115,7 @@ make clean && make
 受信側（クライアント）からの接続と `OPEN_CAMERA` コマンドを待ってから配信を開始するモードです。（XR アプリ等と連携する場合に標準的です）
 listenはPC側がVR側からの要求（OPEN_CAMERA）待ちという意味。要求を受け取ったら映像の配信を開始することになる。つまりサーバーが映像を配信し始める。
 ```
+# パッケージのダウンロードを考えるのがめんどくさくて1つ目の方法の仮想環境を使用しています
 conda activate tv
 cd ~/XRoboToolkit-Orin-Video-Sender
 ./OrinVideoSender --listen 0.0.0.0:13579 --cam1 0 --cam2 2
