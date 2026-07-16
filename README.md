@@ -57,25 +57,6 @@ make
 - The encoded h264 stream can be also played in [Unity-Client](https://github.com/XR-Robotics/XRoboToolkit-Unity-Client) [TCP Only].
 
 
-# 自分用のまとめ
-## GitHub上でプログラムを変更したとき、ローカルに変更を反映させるコマンド
-```
-git pull origin main
-```
-## ローカル上でプログラムを変更したとき、GitHubに変更を反映させるコマンド
-```
-git add .
-```
-* 意味: 「今回変更・追加したファイルを全部まとめて段ボール箱に入れて！」というコマンドです。
-```
-git commit -m "カメラの解像度を変更"
-```
-* 意味: "" の中に、あとで自分が振り返ったときに分かりやすい変更内容を書きます（日本語でOKです）。
-```
-git push origin main
-```
-* 意味: 「手元でセーブしたデータを、GitHubにアップロードして！」というコマンドです。
-
 ## 利用方法
 - つながっているカメラの確認コマンド
 ```
