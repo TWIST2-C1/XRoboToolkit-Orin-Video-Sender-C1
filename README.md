@@ -72,7 +72,10 @@ ls -l /dev/video*
 ```
 v4l2-ctl --list-devices
 ```
-### xr_teleoperationを基にしたプログラムで映像を入手してVRで確認するとき
+
+---
+
+### xr_teleoperationを基にしたプログラムで映像を入手してVRで確認するとき(1つ目の方法)
 * 準備
 video_test.pyのプログラムを開いて、IPアドレスを使用しているPCのアドレスに変更する。（デフォルトでは192.168.??.??のようになっているはず）  
 * ターミナル１（映像の配信用）
@@ -86,8 +89,10 @@ python -m teleimager.image_server
 conda activate tv
 python ~/TWIST2/video_test.py 
 ```
-### XRobotToolkit-Orin-Video-Senderを基にしたプログラムで映像を入手してVRで確認するとき
-* 現在準備中
+
+---
+
+### XRobotToolkit-Orin-Video-Senderを基にしたプログラムで映像を入手してVRで確認するとき（2つ目の方法）
 #### PICO4U内のプログラムを変更してC1の項目を作成。（映像の解像度を変更するときにもこれを使用する必要があります）
  ```
 # pull the file first
