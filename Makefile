@@ -79,7 +79,7 @@ LDFLAGS := -L/usr/local/zed/lib \
 LDFLAGS += $(shell pkg-config --libs libavcodec libavformat libavutil libswscale libavdevice 2>/dev/null || echo "-lavcodec -lavformat -lavutil -lswscale -lavdevice")
 
 # Core libraries
-#LDFLAGS += -lsl_zed \ 
+#LDFLAGS += -lsl_zed \
 # Core libraries
 #ZEDのときに使用
 #LDFLAGS += -lsl_zed -lcuda -lcudart \
